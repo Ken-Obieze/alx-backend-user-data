@@ -6,12 +6,10 @@ import csv
 import os
 import mysql.connector
 import datetime
-
 from typing import List
-
 from filtered_logger import RedactingFormatter, filter_datum
 
-PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+PII_FIELDS = ('name', 'password', 'phone', 'ssn', 'email')
 
 
 def get_logger() -> logging.Logger:
@@ -70,11 +68,13 @@ class RedactingFormatter(logging.Formatter):
         log_message = super().format(record)
         return filter_datum(self.fields, self.REDACTION, log_message, self.SEPARATOR)
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: List[str], redaction: str, message: str,
+                 separator: str) -> str:
     """Create filter."""
-    return re.sub(fr'(?<=^|{re.escape(separator)})(\w+)=(.*?)(?={re.escape(separator)}|$)',
-                  fr'\1={redaction}' if r'\1' in fields else fr'\1=\2',
-                  message)
+    for field in fields:
+        replace = "{}={}{}".format(field, redaction, separator)
+        message = re.sub("{}=.*?{}".format(field, separator), replace, message)
+    return message
 
 def main():
     """Configure logger."""
