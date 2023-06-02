@@ -28,4 +28,5 @@ def stats() -> str:
 
 @app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
 def unauthorized_endpoint():
+    """ abort with 401 error"""
     abort(401)
