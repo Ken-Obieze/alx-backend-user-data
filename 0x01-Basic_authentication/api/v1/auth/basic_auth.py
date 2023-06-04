@@ -11,7 +11,7 @@ import os
 
 class BasicAuth(Auth):
     """Basic Authentication class"""
-     def extract_base64_authorization_header(
+    def extract_base64_authorization_header(
             self, authorization_header: str) -> str:
         """Performs base64 encoding on the authorization_heaer."""
         if authorization_header is None or type(authorization_header) != str:
