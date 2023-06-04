@@ -29,3 +29,16 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """Get current user."""
         return None
+
+    def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
+        """Improving required Auth."""
+        if path is None or excluded_paths is None or excluded_paths == []:
+            return True
+        for ex_path in excluded_paths:
+            if ex_path.endswith("*"):
+                prefix = ex_path[:-1]
+                if path.startswith(prefix):
+                    return False
+            elif path == ex_path:
+                return False
+        return True
