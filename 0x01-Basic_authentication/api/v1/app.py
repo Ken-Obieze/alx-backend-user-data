@@ -20,7 +20,7 @@ if getenv("AUTH_TYPE", None) == "auth":
     auth = Auth()
 
 
-if getenv("AUTH_TYPE", None) == "auth":
+if getenv("AUTH_TYPE", None) == "basic_auth":
     from api.v1.auth.basic_auth import BasicAuth
     auth = BasicAuth()
 
@@ -44,7 +44,7 @@ def forbidden(error) -> str:
 
 
 @app.before_request
-def before_request():
+def before_request() -> str:
     """before request handler."""
     if auth is None:
         return
