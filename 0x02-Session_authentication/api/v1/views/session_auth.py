@@ -4,7 +4,7 @@
 from flask import abort, jsonify, request
 from api.v1.app import auth
 from models.user import User
-
+from api.v1.views import app_views
 
 @app.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def session_login():
@@ -24,8 +24,6 @@ def session_login():
     user = users[0]
     if not user.is_valid_password(password):
         return jsonify({"error": "wrong password"}), 401
-
-    from api.v1.app import auth
     session_id = auth.create_session(user.id)
     response = jsonify(user.to_json())
     response.set_cookie(auth.SESSION_NAME, session_id)
@@ -34,8 +32,7 @@ def session_login():
 
 @app.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
 def session_logout():
-    """Session logout"""
-    from api.v1.app import auth
+    """Session logout"""h
     if not auth.destroy_session(request):
         abort(404)
 
