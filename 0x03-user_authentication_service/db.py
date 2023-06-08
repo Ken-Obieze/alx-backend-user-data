@@ -5,6 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from user import Base, User
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 
 
 class DB:
@@ -55,3 +57,22 @@ class DB:
             return user
         except InvalidRequestError:
             raise InvalidRequestError
+
+        def update_user(self, user_id: int, **kwargs) -> None:
+        """Update a user's attributes in the database.
+        Args:
+            user_id: ID of the user to update
+            **kwargs: Arbitrary keyword arguments representing the attributes to update.
+        Raises:
+            ValueError: If an argument that does not correspond to a user attribute is passed
+        """
+        try:
+            user = self.find_user_by(id=user_id)
+            for attr, value in kwargs.items():
+                if hasattr(user, attr):
+                    setattr(user, attr, value)
+                else:
+                    raise ValueError
+            self._session.commit()
+        except NoResultFound:
+            raise NoResultFound
