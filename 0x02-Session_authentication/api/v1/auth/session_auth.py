@@ -26,9 +26,8 @@ class SessionAuth(Auth):
 
         return self.user_id_by_session_id.get(session_id)
 
-    def current_user(self, request=None) -> TypeVar('User'):
-        """ Current user
-        """
+    def current_user(self, request=None):
+        """Current user."""
         if request is None:
             return None
 
