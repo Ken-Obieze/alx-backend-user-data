@@ -38,7 +38,7 @@ def unauthorized(error) -> str:
 
 
 @app.errorhandler(403)
-def forbidden(error):
+def forbidden(error) -> str:
     """Forbidden Handler"""
     response = jsonify({"error": "Forbidden"})
     response.status_code = 403
