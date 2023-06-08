@@ -22,6 +22,8 @@ class Auth:
         """Improving required Auth."""
         if path is None or excluded_paths is None or excluded_paths == []:
             return True
+        if path in excluded_paths or path + "/" in excluded_paths:
+            return False
         for ex_path in excluded_paths:
             if ex_path.endswith("*"):
                 prefix = ex_path[:-1]
