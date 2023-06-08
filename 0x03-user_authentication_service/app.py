@@ -11,20 +11,20 @@ AUTH = Auth()
 
 
 @app.route("/")
-def welcome() -> str:
+def index() -> str:
     """Home route"""
     message = {"message": "Bienvenue"}
     return jsonify(message)
 
 @app.route("/users", methods=["POST", strict_slashes=False])
-def register_user() -> str:
+def users() -> str:
     """Register new User."""
     email = request.form.get("email")
     password = request.form.get("password")
-
     try:
         user = AUTH.register_user(email, password)
-        return jsonify({"email": user.email, "message": "user created"})
+        if new_user is not None:
+            return jsonify({"email": user.email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
