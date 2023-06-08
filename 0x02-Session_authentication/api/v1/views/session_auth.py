@@ -7,7 +7,7 @@ from api.v1.views import app_views
 from os import getenv
 
 
-@app.route('/auth_session/login', methods=['POST'], strict_slashes=False)
+@app_view.sroute('/auth_session/login', methods=['POST'], strict_slashes=False)
 def session_login() -> str:
     """Session login."""
     email = request.form.get('email')
@@ -30,7 +30,7 @@ def session_login() -> str:
         user_data.set_cookie(session_name, _my_session_id)
         return user_data, 200
 
-@app.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
 def session_logout() -> str:
     """Session logout"""
     from api.v1.app import authh
