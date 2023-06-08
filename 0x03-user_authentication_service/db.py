@@ -33,7 +33,7 @@ class DB:
             email: Email of the user
             hashed_password: Hashed password of the user
         Returns:
-            User object of the newly created user
+            User object of the newly created user.
         """
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
@@ -58,7 +58,7 @@ class DB:
         except InvalidRequestError:
             raise InvalidRequestError
 
-        def update_user(self, user_id: int, **kwargs) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user's attributes in the database.
         Args:
             user_id: ID of the user to update
