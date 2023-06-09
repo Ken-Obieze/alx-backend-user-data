@@ -3,11 +3,14 @@
 Filtered Logger
 """
 
-from typing import List
+from typing import List, Tuple
 import logging
 import mysql.connector
 import os
 import re
+
+
+PII_FIELDS: Tuple[str] = ('name', 'email', 'phone', 'ssn', 'password')
 
 
 def filter_datum(fields: List[str], redaction: str, message: str,
