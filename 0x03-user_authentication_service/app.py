@@ -23,10 +23,9 @@ def users() -> str:
     password = request.form.get("password")
     try:
         user = AUTH.register_user(email, password)
-        if new_user is not None:
-            return jsonify({"email": user.email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
+    return jsonify({"email": "%s" % email, "message": "user created"})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
