@@ -9,21 +9,11 @@ from uuid import uuid4
 
 
 def _hash_password(password: str) -> bytes:
-    """Hashes the input password using bcrypt
-
-    Args:
-        password: Input password string
-
-    Returns:
-        Salted hash of the input password as bytes
-    """
-    encoded_password = password.encode('utf-8')
-    salt = gensalt()
-    hashed_password = hashpw(encoded_password, salt)
-    return hashed_password
+    """Hashes the input password using bcrypt."""
+    return hashpw(password.encode('utf-8'), gensalt())
 
 
-def _generate_uuid(self) -> str:
+def _generate_uuid() -> str:
         """Generates a string representation of a new UUID."""
         return str(uuid4())
 
@@ -106,7 +96,7 @@ class Auth:
         """Update user's password using reset token."""
         user = self._db.find_user_by_reset_token(reset_token)
         if not user:
-            raise ValueError("Invalid reset token")
+            raise ValueError
 
         hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         self._db.update_user_password(user.id, hashed_password)

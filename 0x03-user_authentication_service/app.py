@@ -55,6 +55,7 @@ def logout():
     AUTH.destroy_session(user.id)
     return redirect('/')
 
+
 @app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile() -> str:
     """Profile endpoint."""
@@ -65,13 +66,13 @@ def profile() -> str:
     else:
         abort(403)
 
-@app.route('/reset_password', methods=['POST'])
-def get_reset_password_token():
+
+@app.route('/reset_password', methods=['POST'], strict_slashes=False)
+def get_reset_password_token() -> str:
     """Generate a reset password token for the user."""
     email = request.form.get('email')
     if not email:
         return jsonify({"error": "Missing email field"}), 400
-
     try:
         reset_token = auth.get_reset_password_token(email)
     except ValueError:
@@ -79,17 +80,17 @@ def get_reset_password_token():
 
     return jsonify({"email": email, "reset_token": reset_token}), 200
 
+
 @app.route('/reset_password', methods=['PUT'])
 def update_password():
+    """update password route."""
     email = request.form.get('email')
     reset_token = request.form.get('reset_token')
     new_password = request.form.get('new_password')
-
     try:
-        auth.update_password(reset_token, new_password)
+        AUTH.update_password(reset_token, new_password)
     except ValueError:
         abort(403)
-
     user = auth._db.find_user_by_email(email)
     response = {"email": user.email, "message": "Password updated"}
 
