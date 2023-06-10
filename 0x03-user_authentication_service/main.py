@@ -9,6 +9,7 @@ NEW_PASSWD = "t4rt1fl3tt3"
 
 BASE_URL = "http://localhost:5000"
 
+
 def register_user(email: str, password: str) -> None:
     """Test registration endpoint"""
     url = f"{BASE_URL}/users"
