@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Main Module"""
+"""Main Module."""
 
 import requests
 
@@ -11,7 +11,7 @@ BASE_URL = "http://localhost:5000"
 
 
 def register_user(email: str, password: str) -> None:
-    """Test registration endpoint"""
+    """Test registration endpoint."""
     url = f"{BASE_URL}/users"
     payload = {"email": email, "password": password}
     response = requests.post(url, data=payload)
