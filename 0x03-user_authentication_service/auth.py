@@ -6,6 +6,7 @@ from db import DB
 from user import User
 from bcrypt import hashpw, gensalt, checkpw
 from uuid import uuid4
+from sqlalchemy.orm.exc import NoResultFound
 
 
 def _hash_password(password: str) -> bytes:
@@ -28,12 +29,13 @@ class Auth:
     def register_user(self, email: str, password: str) -> User:
         """Registers a new user."""
         try:
-            self._db.find_user_by(email=email)
-            raise ValueError(f"User {email} already exists")
+            user = self._db.find_user_by(email=email)
+            if user:
+                raise ValueError(f"User {email} already exists")
         except NoResultFound:
             hashed_password = _hash_password(password)
-            user = self._db.add_user(email, hashed_password)
-            return user
+            new_user = self._db.add_user(email, hashed_password)
+            return new_user
 
     def valid_login(self, email: str, password: str) -> bool:
         """Checks if login credentials are valid."""
