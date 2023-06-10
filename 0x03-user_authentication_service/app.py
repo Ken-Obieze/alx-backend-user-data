@@ -11,7 +11,7 @@ AUTH = Auth()
 
 
 @app.route("/")
-def index() -> str:
+def welcome() -> str:
     """Home route"""
     message = {"message": "Bienvenue"}
     return jsonify(message)
