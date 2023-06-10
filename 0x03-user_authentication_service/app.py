@@ -16,6 +16,7 @@ def index() -> str:
     message = {"message": "Bienvenue"}
     return jsonify(message)
 
+
 @app.route("/users", methods=["POST", strict_slashes=False])
 def users() -> str:
     """Register new User."""
@@ -76,7 +77,9 @@ def get_reset_password_token() -> str:
     try:
         reset_token = auth.get_reset_password_token(email)
     except ValueError:
-        return jsonify({"error": f"User with email {email} does not exist"}), 403
+        return jsonify(
+                {"error": f"User with email {email} does not exist"}
+                ), 403
 
     return jsonify({"email": email, "reset_token": reset_token}), 200
 
