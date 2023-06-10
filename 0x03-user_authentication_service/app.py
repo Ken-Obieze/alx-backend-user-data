@@ -11,9 +11,10 @@ AUTH = Auth()
 
 
 @app.route("/")
-def home() -> str:
-    """Home route."""
-    return jsonify({"message": "Bienvenue"}))
+def welcome():
+    """Welcome route."""
+    message = {"message": "Bienvenue"}
+    return jsonify(message)
 
 
 @app.route("/users", methods=["POST", strict_slashes=False])
