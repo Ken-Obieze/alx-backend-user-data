@@ -10,6 +10,28 @@ from typing import List, Tuple
 PII_FIELDS: Tuple[str]= ("name", "email", "phone", "ssn", "password")
 
 
+class RedactingFormatter(logging.Formatter):
+    """Redacting Formatter class."""
+
+    REDACTION = "***"
+    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
+    SEPARATOR = "; "
+
+    def __init__(self, fields: list):
+        """Set fields for each instance."""
+        super(RedactingFormatter, self).__init__(self.FORMAT)
+        self.fields = fields
+
+    def format(self, record: logging.LogRecord) -> str:
+        """Format the LogRecord instanceFormats the LogRecord instance."""
+        message = super().format(record)
+        for field in self.fields:
+            message = filter_datum([field], \
+                self.REDACTION, message, self.SEPARATOR)
+        return message
+
+
+
 def filter_datum(fields: List[str], redaction: str, message: str,
                  separator: str) -> str:
     """
@@ -28,25 +50,6 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     return re.sub(f'({regex})=[^\\{separator}]*', f'\\1={redaction}', message)
 
 
-class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class """
-
-    REDACTION = "***"
-    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
-    SEPARATOR = ";"
-
-    def __init__(self, fields: list):
-        """Instantiation method, sets fields for each instance."""
-        super(RedactingFormatter, self).__init__(self.FORMAT)
-        self.fields = fields
-
-    def format(self, record: logging.LogRecord) -> str:
-        """Format the LogRecord instanceFormats the LogRecord instance."""
-        message = super().format(record)
-        for field in self.fields:
-            message = filter_datum([field], \
-                self.REDACTION, message, self.SEPARATOR)
-        return message
 
 def get_logger():
     """Create and configures a logger."""
@@ -57,10 +60,9 @@ def get_logger():
     stream_handler = logging.StreamHandler()
     formatter = RedactingFormatter(fields=PII_FIELDS)
     stream_handler.setFormatter(formatter)
-
     logger.addHandler(stream_handler)
-
     return logger
+
 
 def get_db():
     """Connect to a mysql database."""
