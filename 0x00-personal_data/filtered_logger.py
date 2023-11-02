@@ -29,7 +29,7 @@ class RedactingFormatter(logging.Formatter):
 
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
-    SEPARATOR = "; "
+    SEPARATOR = ";"
 
     def __init__(self, fields: list):
         """Instantiation method, sets fields for each instance."""
